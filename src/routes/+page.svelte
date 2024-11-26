@@ -3,7 +3,7 @@
 </script>
 
 <GfxContrainer
-  ><div class="message">This website is in renovation 🏗️</div></GfxContrainer
+  ><div class="message">This website is under renovation 🏗️</div></GfxContrainer
 >
 
 <style>
