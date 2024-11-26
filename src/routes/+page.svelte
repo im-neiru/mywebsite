@@ -1,5 +1,20 @@
 <script>
-import { GfxContrainer } from "$lib";
+  import { GfxContrainer } from "$lib";
 </script>
 
-<GfxContrainer><h3>This website is renovation 🏗️</h3></GfxContrainer>
+<GfxContrainer
+  ><div class="message">This website is in renovation 🏗️</div></GfxContrainer
+>
+
+<style>
+  div.message {
+    font-family: var(--sans-600);
+    font-size: larger;
+
+    color: black;
+    background-color: #fffc;
+    padding: 4px 8px;
+
+    border-radius: 8px;
+  }
+</style>
