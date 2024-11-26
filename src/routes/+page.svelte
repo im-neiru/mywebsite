@@ -1,5 +1,5 @@
 <script>
-  import Graphics from "$lib/Graphics.svelte";
+  import { GfxContrainer } from "$lib";
 </script>
 
-<Graphics />
+<GfxContrainer><h3>This website is renovation 🏗️</h3></GfxContrainer>
