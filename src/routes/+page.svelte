@@ -1,2 +1,5 @@
-<title>Neil Cantorne</title>
-<p>Neil Cantorne</p>
+<script>
+  import Graphics from "$lib/Graphics.svelte";
+</script>
+
+<Graphics />
