@@ -1,10 +1,21 @@
 <script>
   import { GfxContrainer } from "$lib";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    setTimeout(() => {
+      const headers = window.document.querySelectorAll("h1.top-h1");
+
+      for (const h1 of headers) {
+        window.document.body.removeChild(h1);
+      }
+    }, 6000);
+  });
 </script>
 
-<GfxContrainer
-  ><div class="message">This website is under renovation 🏗️</div></GfxContrainer
->
+<GfxContrainer>
+  <div class="message">This website is under renovation 🏗️</div>
+</GfxContrainer>
 
 <style>
   div.message {
