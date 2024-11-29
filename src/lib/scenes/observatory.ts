@@ -1,45 +1,29 @@
-import type { GfxScene } from "$lib/graphics";
-import {
-  BoxGeometry,
-  Mesh,
-  MeshNormalMaterial,
-  PerspectiveCamera,
-  Scene,
-  type WebGLRenderer,
-  type Object3DEventMap,
-} from "three";
+import { GasPlanet, type GfxScene } from "$lib/graphics";
+import { PerspectiveCamera, Scene, type WebGLRenderer } from "three";
 
 export class Observatory implements GfxScene {
   private camera?: PerspectiveCamera;
-  private scene?: Scene;
-  private geometry?: BoxGeometry;
-  private material?: MeshNormalMaterial;
-  private mesh?: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>;
+  private scene: Scene;
+  private planet: GasPlanet;
+
+  constructor() {
+    this.scene = new Scene();
+    this.planet = new GasPlanet(0.2, 32, 16);
+  }
 
   setup(width: number, height: number): void {
     this.camera = new PerspectiveCamera(70, width / height, 0.01, 10);
     this.camera.position.z = 1;
 
-    this.scene = new Scene();
-
-    this.geometry = new BoxGeometry(0.2, 0.2, 0.2);
-    this.material = new MeshNormalMaterial();
-
-    this.mesh = new Mesh(this.geometry, this.material);
-    this.scene.add(this.mesh);
+    this.scene.add(this.planet);
   }
 
   update(renderer: WebGLRenderer, time: number): void {
-    if (
-      this.scene === undefined ||
-      this.camera === undefined ||
-      this.mesh === undefined
-    ) {
+    if (this.camera === undefined) {
       return;
     }
 
-    this.mesh.rotation.x = time / 2000;
-    this.mesh.rotation.y = time / 1000;
+    this.planet.rotation.y = time / 1000;
 
     renderer.render(this.scene, this.camera);
   }
