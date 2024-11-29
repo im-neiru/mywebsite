@@ -1,6 +1,13 @@
-import { fs_gas_planet, vs_planet } from "$shaders";
+import { fs_gas_planet, fs_ring, vs_planet, vs_ring } from "$shaders";
 
-import { Color, Mesh, Object3D, ShaderMaterial, SphereGeometry } from "three";
+import {
+  Color,
+  Mesh,
+  Object3D,
+  RingGeometry,
+  ShaderMaterial,
+  SphereGeometry,
+} from "three";
 
 export class GasPlanet extends Object3D {
   constructor(
@@ -19,18 +26,25 @@ export class GasPlanet extends Object3D {
     fresnelPower?: number
   ) {
     super();
-    const geometry = new SphereGeometry(radius, widthSegments, heightSegments);
+    const planetGeometry = new SphereGeometry(
+      radius,
+      widthSegments,
+      heightSegments
+    );
+    const ringGeometry = new RingGeometry(0.46, 0.45, 48);
 
-    const material = new ShaderMaterial({
+    ringGeometry.rotateX(Math.PI / 2);
+
+    const planetMaterial = new ShaderMaterial({
       vertexShader: vs_planet,
       fragmentShader: fs_gas_planet,
       uniforms: {
-        surfaceColor1: { value: new Color(0x5e4cef) },
-        surfaceColor2: { value: new Color(0x9438ff) },
+        surfaceColor1: { value: new Color(0x0060a1) },
+        surfaceColor2: { value: new Color(0x0026a1) },
 
         // Fresnel options
         fresnelShade1: {
-          value: fresnelShade1 ? fresnelShade1 : new Color(0xffffff),
+          value: fresnelShade1 ? fresnelShade1 : new Color(0x88ffff),
         },
         fresnelBias1: { value: fresnelBias1 ? fresnelBias1 : 0.001 },
         fresnelScale1: { value: fresnelScale1 ? fresnelScale1 : 1.8 },
@@ -43,8 +57,19 @@ export class GasPlanet extends Object3D {
       },
     });
 
-    const mesh = new Mesh(geometry, material);
+    const ringMaterial = new ShaderMaterial({
+      vertexShader: vs_ring,
+      fragmentShader: fs_ring,
+      uniforms: {
+        ringColor: { value: new Color(0xffffff) },
+      },
+      transparent: true,
+    });
 
-    this.add(mesh);
+    const planet = new Mesh(planetGeometry, planetMaterial);
+    const ring = new Mesh(ringGeometry, ringMaterial);
+
+    this.add(planet);
+    // this.add(ring);
   }
 }

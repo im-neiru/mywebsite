@@ -40,11 +40,12 @@
 
       window.addEventListener("resize", handleResize);
 
-      scene.setup(width, height);
+      scene.setup(renderer, width, height);
 
       renderer.setAnimationLoop((time) => {
         if (renderer) {
-          scene.update(renderer, time);
+          scene.update(time);
+          scene.render(renderer, time);
         }
       });
     }
