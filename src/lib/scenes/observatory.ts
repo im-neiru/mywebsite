@@ -28,16 +28,16 @@ export class Observatory implements GfxScene {
   setup(renderer: WebGLRenderer, width: number, height: number): void {
     this.camera = new PerspectiveCamera(70, width / height, 0.01, 10);
 
-    this.camera.position.z = 1;
-    this.camera.position.y = 0.3;
+    this.camera.position.z = 0.6;
+    this.camera.position.y = 0.4;
     this.camera.lookAt(new Vector3(0, 0, 0));
 
     this.scene.add(this.planet);
 
     this.bloomPass = new UnrealBloomPass(
-      new Vector2(width, height),
-      1.0,
-      1.0,
+      new Vector2(width * 2, height * 2),
+      1.3,
+      0.4,
       0.1
     );
 
@@ -53,7 +53,7 @@ export class Observatory implements GfxScene {
       return;
     }
 
-    this.planet.rotation.y = time / 1000;
+    this.planet.rotation.y = time / 3000;
   }
 
   render(_: WebGLRenderer, time: number): void {
@@ -63,8 +63,8 @@ export class Observatory implements GfxScene {
   resize(width: number, height: number): void {
     this.camera = new PerspectiveCamera(70, width / height, 0.01, 10);
 
-    this.camera.position.z = 1;
-    this.camera.position.y = 0.3;
+    this.camera.position.z = 0.6;
+    this.camera.position.y = 0.4;
     this.camera.lookAt(new Vector3(0, 0, 0));
   }
 }

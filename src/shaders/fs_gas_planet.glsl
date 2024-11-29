@@ -22,9 +22,9 @@ void main() {
     vec3 viewDir = normalize(vViewDir);
 
     // Calculate surface pattern
-    float vShift =  0.1 * sin(vUv.x * TAU * 12.0) +  0.8 * cos(vUv.x * TAU * 2.0);
+    float vShift =  0.2 * sin(vUv.x * TAU * 24.0) +  0.8 * cos(vUv.x * TAU * 2.0);
 
-    vec3 surfaceColor = mix(surfaceColor1, surfaceColor2, cos(vUv.y * TAU * 7.0 + vShift));
+    vec3 surfaceColor = mix(surfaceColor1, surfaceColor2, cos(vUv.y * TAU * 8.0 + vShift));
 
     // Calculate fresnel
     float fresnelPowerFx =  pow(1.0 - dot(normal, viewDir), fresnelPower);
@@ -35,7 +35,7 @@ void main() {
     vec3 fresnelFxOuter = mix(fresnelFxInner, fresnelShade1, fresnel1);
 
 
-    float darkShade = pow(1.0 - clamp(dot(normal, lightDirection), -0.0, 1.0), 2.0);
+    float darkShade = pow(1.0 - clamp(dot(normal, lightDirection), -0.1, 1.0), 2.0);
 
     vec3 color = mix(fresnelFxOuter, vec3(0.0, 0.0, 0.01), darkShade);
 
