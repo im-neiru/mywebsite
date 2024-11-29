@@ -14,6 +14,9 @@ const config = {
 		adapter: adapter({
 			runtime: "nodejs20.x",
 		}),
+		alias: {
+			"$shaders": "./src/shaders"
+		}
 	},
 };
 
