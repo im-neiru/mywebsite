@@ -7,6 +7,7 @@ import {
   RingGeometry,
   ShaderMaterial,
   SphereGeometry,
+  Vector3,
 } from "three";
 
 export class GasPlanet extends Object3D {
@@ -31,7 +32,8 @@ export class GasPlanet extends Object3D {
       widthSegments,
       heightSegments
     );
-    const ringGeometry = new RingGeometry(0.46, 0.45, 48);
+    const ringGeometry = new RingGeometry(0.38, 0.37, 48);
+    const lightDirection = new Vector3(-0.4, 0.0, 0.2).normalize();
 
     ringGeometry.rotateX(Math.PI / 2);
 
@@ -54,6 +56,7 @@ export class GasPlanet extends Object3D {
         fresnelBias2: { value: fresnelBias2 ? fresnelBias2 : 0.1 },
         fresnelScale2: { value: fresnelScale2 ? fresnelScale2 : 1.5 },
         fresnelPower: { value: fresnelPower ? fresnelPower : 3.0 },
+        lightDirection: { value: lightDirection },
       },
     });
 
@@ -62,14 +65,16 @@ export class GasPlanet extends Object3D {
       fragmentShader: fs_ring,
       uniforms: {
         ringColor: { value: new Color(0xffffff) },
+        planetPosition: { value: new Vector3(0, 0, 0) },
+        planetRadius: { value: radius },
+        lightDirection: { value: lightDirection },
       },
-      transparent: true,
     });
 
     const planet = new Mesh(planetGeometry, planetMaterial);
     const ring = new Mesh(ringGeometry, ringMaterial);
 
     this.add(planet);
-    // this.add(ring);
+    this.add(ring);
   }
 }

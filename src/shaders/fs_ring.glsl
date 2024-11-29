@@ -1,6 +1,10 @@
 varying vec2 vUv;
+varying vec4 vPosition;
 
 uniform vec3 ringColor;
+uniform vec2 planetPosition;
+uniform float planetRadius;
+uniform vec3 lightDirection;
 
 #define TAU 6.2831853076
 
@@ -24,11 +28,16 @@ float noise(vec2 p) {
            (d - b) * u.x * u.y;
 }
 
+
 void main() {
-    vec2 scaledUv = vUv * 256.0;
-    float vShift = noise(scaledUv) * 0.5 + noise(scaledUv * 0.5) * 0.25;
+    vec2 vCoords = vPosition.xy;
+		vCoords /= vPosition.w;
+		vCoords = -vCoords * 0.5 + 0.5;
 
-    float alpha = smoothstep(0.2, 1.1, vShift) * 2.0 - 0.3;
+    vec2 uv = normalize(vCoords);
 
-    gl_FragColor = vec4(ringColor, alpha);
+    float vShift = clamp(noise(vUv) * 0.5 + noise(vUv * 0.5) * 0.25, 0.8, 1.0);
+    float shade =  clamp(pow(uv.x + uv.y * 0.3 - 0.2, 16.0) * 12.0, 0.0, 1.0);
+
+    gl_FragColor = vec4(ringColor * shade * vShift, 1.0);
 }
