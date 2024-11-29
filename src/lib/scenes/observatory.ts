@@ -8,7 +8,7 @@ export class Observatory implements GfxScene {
 
   constructor() {
     this.scene = new Scene();
-    this.planet = new GasPlanet(0.2, 32, 16);
+    this.planet = new GasPlanet(0.2, 48, 24);
   }
 
   setup(width: number, height: number): void {
