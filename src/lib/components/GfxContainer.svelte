@@ -92,12 +92,5 @@
 
     width: 100%;
     height: 100%;
-
-    display: flexbox;
-
-    flex-direction: column;
-
-    align-content: center;
-    justify-items: center;
   }
 </style>
