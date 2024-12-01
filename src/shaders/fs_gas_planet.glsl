@@ -7,19 +7,16 @@ uniform float phase;
 uniform float bands;
 uniform vec3 surfaceColor1;
 uniform vec3 surfaceColor2;
-uniform vec3 fresnelShade1;
-uniform vec3 fresnelShade2;
+uniform vec3 fresnelShade;
 uniform float fresnelPower;
-uniform float fresnelBias1;
-uniform float fresnelScale1;
-uniform float fresnelBias2;
-uniform float fresnelScale2;
+uniform float fresnelBias;
+uniform float fresnelScale;
 
 uniform vec3 lightDirection;
 
 #define TAU 6.28318530718
 #define PI 3.141592653589793
-#define MAX_TILT 0.298132;
+#define MAX_TILT 0.3;
 
 vec3 grain_noise(vec2 uv) {
     vec2 st = ceil(uv * 600.0);
@@ -51,14 +48,14 @@ vec3 sampleSurface(vec2 uv, vec3 normal, vec3 lightDirection) {
     if(uv.y > artic && uv.y < (1.0 - artic)) {
         wave = sin(uv.x * TAU * 24.0) + cos(uv.x * TAU * 8.0);
         float d = (uv.y - 0.5);
-        wave *= pow(max(0.0, 0.25 - d * d), 4.0) * 400.0;
+        wave *= pow(max(0.0, 0.25 - d * d), 4.0) * 50.0;
     } else {
         wave = phase * PI;
     }
 
     normal = tiltNormal(normal, vec2(xShift, wave));
 
-    float mixFactor = (sin(uv.y * TAU * bands + wave) + 1.0) * 0.5;
+    float mixFactor = (sin(uv.y * TAU * bands + wave + phase) + 1.0) * 0.5;
 
     vec3 baseColor = mix(surfaceColor1, surfaceColor2, mixFactor) * grain_noise(uv);
 
@@ -75,15 +72,13 @@ void main() {
 
     // Calculate fresnel
     float fresnelPowerFx = pow(1.0 - dot(normal, viewDir), fresnelPower);
-    float fresnel1 = fresnelBias1 + fresnelScale1 * fresnelPowerFx;
-    float fresnel2 = fresnelBias2 + fresnelScale2 * fresnelPowerFx;
+    float fresnel = fresnelBias + fresnelScale * fresnelPowerFx;
 
-    vec3 fresnelFxInner = mix(surfaceColor, fresnelShade2, fresnel2);
-    vec3 fresnelFxOuter = mix(fresnelFxInner, fresnelShade1, fresnel1);
+    vec3 fresnelOutput = mix(surfaceColor, fresnelShade, fresnel);
 
     float darkShade = pow(1.0 - clamp(dot(normal, lightDirection), -0.1, 1.0), 2.0);
 
-    vec3 color = mix(fresnelFxOuter, vec3(0.0, 0.0, 0.01), darkShade);
+    vec3 color = mix(fresnelOutput, vec3(0.0, 0.0, 0.01), darkShade);
 
     gl_FragColor = vec4(color, 1.0);
 }

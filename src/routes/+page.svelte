@@ -21,11 +21,7 @@
 </script>
 
 <GfxContainer scene={observatory}>
-  {#if devMode}
-    <div>This site is under construction 🏗️</div>
-  {/if}
-
-  <div class="colors">
+  <div class="options">
     This website is currently under development.
 
     <ColorPicker
@@ -76,6 +72,65 @@
         }
       }}
     />
+    <ColorPicker
+      label="Fresnel Shade"
+      rgb={{
+        r: 204,
+        g: 255,
+        b: 255,
+        a: 255,
+      }}
+      on:input={(fresnel) => {
+        if (fresnel.detail.rgb) {
+          observatory.update((current) => {
+            if (fresnel.detail.rgb) {
+              current.fresnelShade = new Color(
+                fresnel.detail.rgb.r * 0.0039063,
+                fresnel.detail.rgb.g * 0.0039063,
+                fresnel.detail.rgb.b * 0.0039063
+              );
+            }
+            return current;
+          });
+        }
+      }}
+    />
+
+    <div class="bands">
+      <span>Bands: </span>
+      <button
+        on:click={() => {
+          observatory.update((current) => {
+            current.bands = 5;
+            return current;
+          });
+        }}>5</button
+      >
+      <button
+        on:click={() => {
+          observatory.update((current) => {
+            current.bands = 8;
+            return current;
+          });
+        }}>8</button
+      >
+      <button
+        on:click={() => {
+          observatory.update((current) => {
+            current.bands = 12;
+            return current;
+          });
+        }}>12</button
+      >
+      <button
+        on:click={() => {
+          observatory.update((current) => {
+            current.bands = 16;
+            return current;
+          });
+        }}>16</button
+      >
+    </div>
   </div>
 </GfxContainer>
 
@@ -85,7 +140,7 @@
     padding: 8px;
   }
 
-  div.colors {
+  div.options {
     display: flex;
     flex-direction: column;
 
@@ -95,5 +150,30 @@
 
     border-radius: 12px;
     max-width: 230px;
+  }
+
+  div.bands {
+    display: flex;
+    flex-direction: row;
+    column-gap: 3px;
+
+    color: black;
+
+    background-color: white;
+
+    border-radius: 12px;
+    max-width: 230px;
+  }
+
+  div.bands > button {
+    border: none;
+    outline: none;
+
+    font-size: var(--mono-400);
+
+    background-color: black;
+    color: white;
+
+    border-radius: 8px;
   }
 </style>

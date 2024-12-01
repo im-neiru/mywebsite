@@ -39,9 +39,9 @@ export class Observatory implements GfxScene {
 
     this.bloomPass = new UnrealBloomPass(
       new Vector2(width * 2, height * 2),
-      0.4,
-      0.4,
-      0.1
+      0.5,
+      1.2,
+      0.2
     );
 
     this.renderPass = new RenderPass(this.scene, this.camera);
@@ -58,7 +58,7 @@ export class Observatory implements GfxScene {
     }
 
     if (this.planet) {
-      this.planet.rotation.y = time / 8000;
+      this.planet.rotation.y = time / 7000;
       this.planet.phase = time / 6000;
     }
   }
@@ -79,8 +79,8 @@ export class Observatory implements GfxScene {
 
   mouseMove(x: number, y: number): void {
     if (this.camera) {
-      this.camera.position.z = Math.cos(x * 1.047198);
-      this.camera.position.y = Math.sin(y * 1.047198);
+      this.camera.position.z = Math.cos(x * 1.047198) * 0.7;
+      this.camera.position.y = Math.sin(y * 1.047198) * 0.7;
       this.camera.lookAt(new Vector3(0, 0, 0));
     }
   }
@@ -91,5 +91,13 @@ export class Observatory implements GfxScene {
 
   set surfaceColor2(value: Color) {
     this.planet.surfaceColor2 = value;
+  }
+
+  set fresnelShade(value: Color) {
+    this.planet.fresnelShade = value;
+  }
+
+  set bands(value: number) {
+    this.planet.bands = value;
   }
 }
