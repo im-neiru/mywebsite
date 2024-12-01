@@ -22,27 +22,28 @@ export class Observatory implements GfxScene {
 
   constructor() {
     this.scene = new Scene();
-    this.planet = new GasPlanet(0.2, 48, 24);
+    this.planet = new GasPlanet(0.25, 48, 24);
   }
 
   setup(renderer: WebGLRenderer, width: number, height: number): void {
     this.camera = new PerspectiveCamera(70, width / height, 0.01, 10);
 
     this.camera.position.z = 0.6;
-    this.camera.position.y = 0.4;
+    this.camera.position.y = 0.5;
     this.camera.lookAt(new Vector3(0, 0, 0));
 
     this.scene.add(this.planet);
 
     this.bloomPass = new UnrealBloomPass(
       new Vector2(width * 2, height * 2),
-      1.3,
+      0.8,
       0.4,
       0.1
     );
 
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.effectComposer = new EffectComposer(renderer);
+    this.effectComposer.setSize(width * 2, height * 2);
 
     this.effectComposer.addPass(this.renderPass);
     this.effectComposer.addPass(this.bloomPass);
@@ -62,9 +63,19 @@ export class Observatory implements GfxScene {
 
   resize(width: number, height: number): void {
     this.camera = new PerspectiveCamera(70, width / height, 0.01, 10);
+    this.effectComposer?.setSize(width * 2, height * 2);
+    this.bloomPass?.setSize(width * 2, height * 2);
 
     this.camera.position.z = 0.6;
-    this.camera.position.y = 0.4;
+    this.camera.position.y = 0.5;
     this.camera.lookAt(new Vector3(0, 0, 0));
+  }
+
+  mouseMove(x: number, y: number): void {
+    if (this.camera) {
+      this.camera.position.z = Math.cos(x * 1.047198);
+      this.camera.position.y = Math.sin(y * 1.047198);
+      this.camera.lookAt(new Vector3(0, 0, 0));
+    }
   }
 }

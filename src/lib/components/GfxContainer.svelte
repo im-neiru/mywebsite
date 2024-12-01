@@ -26,6 +26,15 @@
     }
   }
 
+  function handleMouseMove(ev: MouseEvent) {
+    if (renderer) {
+      const x = Math.min(Math.max(ev.x / window.innerWidth - 0.5, -0.5), 0.5);
+      const y = Math.min(Math.max(0.5 - ev.y / window.innerHeight, -0.5), 0.5);
+
+      scene.mouseMove(x, y);
+    }
+  }
+
   onMount(() => {
     if (canvasEl) {
       const width = canvasEl.clientWidth;
@@ -39,6 +48,7 @@
       renderer.setSize(width, height);
 
       window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", handleMouseMove);
 
       scene.setup(renderer, width, height);
 
@@ -52,6 +62,7 @@
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   });
 </script>

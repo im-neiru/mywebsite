@@ -6,4 +6,5 @@ export interface GfxScene {
   resize(width: number, height: number): void;
   render(renderer: WebGLRenderer, time: number): void;
   update(time: number): void;
+  mouseMove(x: number, y: number): void;
 }
