@@ -39,7 +39,7 @@ export class Observatory implements GfxScene {
 
     this.bloomPass = new UnrealBloomPass(
       new Vector2(width * 2, height * 2),
-      0.5,
+      1.4,
       1.2,
       0.2
     );
