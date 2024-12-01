@@ -39,7 +39,7 @@ export class Observatory implements GfxScene {
 
     this.bloomPass = new UnrealBloomPass(
       new Vector2(width * 2, height * 2),
-      0.8,
+      0.4,
       0.4,
       0.1
     );
@@ -57,7 +57,10 @@ export class Observatory implements GfxScene {
       return;
     }
 
-    this.planet.rotation.y = time / 3000;
+    if (this.planet) {
+      this.planet.rotation.y = time / 10000;
+      this.planet.phase = time / 6000;
+    }
   }
 
   render(_: WebGLRenderer, time: number): void {

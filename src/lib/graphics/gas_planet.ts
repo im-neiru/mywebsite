@@ -11,20 +11,6 @@ import {
 } from "three";
 
 export class GasPlanet extends Object3D {
-  private uniforms: {
-    bands: { value: number };
-    surfaceColor1: { value: Color };
-    surfaceColor2: { value: Color };
-    // Fresnel options
-    fresnelShade1: { value: Color };
-    fresnelBias1: { value: number };
-    fresnelScale1: { value: number };
-    fresnelShade2: { value: Color };
-    fresnelBias2: { value: number };
-    fresnelScale2: { value: number };
-    fresnelPower: { value: number };
-    lightDirection: { value: Vector3 };
-  };
   planetMaterial: ShaderMaterial;
 
   constructor(
@@ -53,7 +39,8 @@ export class GasPlanet extends Object3D {
 
     // ringGeometry.rotateX(Math.PI / 2);
 
-    this.uniforms = {
+    const uniforms = {
+      phase: { value: 0.0 },
       bands: { value: 8 },
       surfaceColor1: { value: new Color(0xed8e77) },
       surfaceColor2: { value: new Color(0x8a2d2d) },
@@ -77,6 +64,7 @@ export class GasPlanet extends Object3D {
       vertexShader: vs_planet,
       fragmentShader: fs_gas_planet,
       uniforms: {
+        phase: { value: 0.0 },
         bands: { value: 8 },
         surfaceColor1: { value: new Color(0xed8e77) },
         surfaceColor2: { value: new Color(0x8a2d2d) },
@@ -121,5 +109,11 @@ export class GasPlanet extends Object3D {
 
   set surfaceColor2(value: Color) {
     this.planetMaterial.uniforms.surfaceColor2.value = value;
+  }
+
+  set phase(value: number) {
+    if (value) {
+      this.planetMaterial.uniforms.phase.value = value;
+    }
   }
 }

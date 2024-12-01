@@ -3,6 +3,7 @@ varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec3 vViewDir;
 
+uniform float phase;
 uniform float bands;
 uniform vec3 surfaceColor1;
 uniform vec3 surfaceColor2;
@@ -40,7 +41,7 @@ vec3 tiltNormal(vec3 v, vec2 factor) {
 }
 
 vec3 sampleSurface(vec2 uv, vec3 normal, vec3 lightDirection) {
-    float xShift = sin(uv.y * TAU * 7.0 + cos(uv.y * TAU * 42.0)) * 0.05 + cos(uv.y * TAU * 12.0) * 0.01;
+    float xShift = sin(uv.y * TAU * 7.0 + cos(uv.y * TAU * 42.0) + phase) * 0.05 + cos(uv.y * TAU * 12.0) * 0.01;
 
     uv.x = uv.x + xShift;
 
@@ -51,9 +52,11 @@ vec3 sampleSurface(vec2 uv, vec3 normal, vec3 lightDirection) {
         wave = sin(uv.x * TAU * 24.0) + cos(uv.x * TAU * 8.0);
         float d = (uv.y - 0.5);
         wave *= pow(max(0.0, 0.25 - d * d), 4.0) * 400.0;
+    } else {
+        wave = phase * PI;
     }
 
-        normal = tiltNormal(normal, vec2(xShift, wave));
+    normal = tiltNormal(normal, vec2(xShift, wave));
 
     float mixFactor = (sin(uv.y * TAU * bands + wave) + 1.0) * 0.5;
 
