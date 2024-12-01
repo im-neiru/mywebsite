@@ -41,8 +41,9 @@ export class GasPlanet extends Object3D {
       vertexShader: vs_planet,
       fragmentShader: fs_gas_planet,
       uniforms: {
-        surfaceColor1: { value: new Color(0x906076) },
-        surfaceColor2: { value: new Color(0x6b4d66) },
+        bands: { value: 8 },
+        surfaceColor1: { value: new Color(0x0f55e0) },
+        surfaceColor2: { value: new Color(0x267bfb) },
 
         // Fresnel options
         fresnelShade1: {
