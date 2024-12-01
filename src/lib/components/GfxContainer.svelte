@@ -50,7 +50,7 @@
       renderer.setSize(width, height);
 
       window.addEventListener("resize", handleResize);
-      // window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mousemove", handleMouseMove);
 
       sceneW.setup(renderer, width, height);
 
@@ -64,7 +64,7 @@
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      // window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   });
 </script>

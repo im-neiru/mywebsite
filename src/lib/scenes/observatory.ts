@@ -58,7 +58,7 @@ export class Observatory implements GfxScene {
     }
 
     if (this.planet) {
-      this.planet.rotation.y = time / 10000;
+      this.planet.rotation.y = time / 8000;
       this.planet.phase = time / 6000;
     }
   }
