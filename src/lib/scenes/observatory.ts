@@ -1,11 +1,13 @@
 import { GasPlanet, type GfxScene } from "$lib/graphics";
 import {
+  type Color,
   PerspectiveCamera,
   Scene,
   Vector2,
   Vector3,
   type WebGLRenderer,
 } from "three";
+
 import {
   EffectComposer,
   RenderPass,
@@ -22,7 +24,7 @@ export class Observatory implements GfxScene {
 
   constructor() {
     this.scene = new Scene();
-    this.planet = new GasPlanet(0.25, 48, 24);
+    this.planet = new GasPlanet(0.3, 48, 32);
   }
 
   setup(renderer: WebGLRenderer, width: number, height: number): void {
@@ -30,6 +32,7 @@ export class Observatory implements GfxScene {
 
     this.camera.position.z = 0.6;
     this.camera.position.y = 0.5;
+    this.camera.up = new Vector3(1, 1, 0);
     this.camera.lookAt(new Vector3(0, 0, 0));
 
     this.scene.add(this.planet);
@@ -43,7 +46,7 @@ export class Observatory implements GfxScene {
 
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.effectComposer = new EffectComposer(renderer);
-    this.effectComposer.setSize(width * 2, height * 2);
+    this.effectComposer.setSize(width * 4, height * 4);
 
     this.effectComposer.addPass(this.renderPass);
     this.effectComposer.addPass(this.bloomPass);
@@ -77,5 +80,13 @@ export class Observatory implements GfxScene {
       this.camera.position.y = Math.sin(y * 1.047198);
       this.camera.lookAt(new Vector3(0, 0, 0));
     }
+  }
+
+  set surfaceColor1(value: Color) {
+    this.planet.surfaceColor1 = value;
+  }
+
+  set surfaceColor2(value: Color) {
+    this.planet.surfaceColor2 = value;
   }
 }

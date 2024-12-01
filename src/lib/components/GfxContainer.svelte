@@ -1,11 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
-  import type { GfxScene } from "$lib/graphics";
   import { WebGLRenderer } from "three";
+  import type { Writable } from "svelte/store";
+  import type { Observatory } from "$lib/scenes";
 
   // svelte-ignore export_let_unused
-  export let scene: GfxScene;
+  export let scene: Writable<Observatory>;
+
+  $: sceneW = $scene;
 
   // biome-ignore lint/style/useConst: svelte binding
   let canvasEl: HTMLCanvasElement | null = null;
@@ -22,7 +24,7 @@
       canvasEl.height = height;
 
       renderer.setSize(width, height);
-      scene.resize(width, height);
+      sceneW.resize(width, height);
     }
   }
 
@@ -31,7 +33,7 @@
       const x = Math.min(Math.max(ev.x / window.innerWidth - 0.5, -0.5), 0.5);
       const y = Math.min(Math.max(0.5 - ev.y / window.innerHeight, -0.5), 0.5);
 
-      scene.mouseMove(x, y);
+      sceneW.mouseMove(x, y);
     }
   }
 
@@ -50,12 +52,12 @@
       window.addEventListener("resize", handleResize);
       window.addEventListener("mousemove", handleMouseMove);
 
-      scene.setup(renderer, width, height);
+      sceneW.setup(renderer, width, height);
 
       renderer.setAnimationLoop((time) => {
         if (renderer) {
-          scene.update(time);
-          scene.render(renderer, time);
+          sceneW.update(time);
+          sceneW.render(renderer, time);
         }
       });
     }

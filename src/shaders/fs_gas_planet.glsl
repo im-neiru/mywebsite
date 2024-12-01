@@ -18,7 +18,7 @@ uniform vec3 lightDirection;
 
 #define TAU 6.28318530718
 #define PI 3.141592653589793
-#define MAX_TILT 0.698132;
+#define MAX_TILT 0.298132;
 
 vec3 grain_noise(vec2 uv) {
     vec2 st = ceil(uv * 600.0);
@@ -50,7 +50,7 @@ vec3 sampleSurface(vec2 uv, vec3 normal, vec3 lightDirection) {
     if(uv.y > artic && uv.y < (1.0 - artic)) {
         wave = sin(uv.x * TAU * 24.0) + cos(uv.x * TAU * 8.0);
         float d = (uv.y - 0.5);
-        wave *= pow(max(0.0, 0.25 - d * d), 4.0) * 200.0;
+        wave *= pow(max(0.0, 0.25 - d * d), 4.0) * 400.0;
     }
 
         normal = tiltNormal(normal, vec2(xShift, wave));
